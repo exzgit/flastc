@@ -1,0 +1,6 @@
+/home/flast/Documents/dev/flast/build/CMakeFiles/intrinsics_gen.dir
+/home/flast/Documents/dev/flast/build/CMakeFiles/omp_gen.dir
+/home/flast/Documents/dev/flast/build/CMakeFiles/acc_gen.dir
+/home/flast/Documents/dev/flast/build/CMakeFiles/flastc.dir
+/home/flast/Documents/dev/flast/build/CMakeFiles/edit_cache.dir
+/home/flast/Documents/dev/flast/build/CMakeFiles/rebuild_cache.dir

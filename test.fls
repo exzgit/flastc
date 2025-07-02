@@ -1,0 +1,44 @@
+// flast.fls
+
+// Import flast system module
+import system from "@flast/system";
+
+// Import external module
+import math from "math";
+
+// class default private
+class foo {
+    pub let a: int = 100; // instance variable default by private
+    pub let b: int = 200;
+
+    // Constructor class
+    func foo() {
+        println("Running Foo");
+    }
+    
+    // Function in class default private
+    pub func add() -> int {
+        let result: int = self.a + self.b;
+        return result;
+    }
+
+    // Function in class default private
+    pub func mul() -> int {
+        let result: int = self.a * self.b;
+        return result;
+    }
+}
+
+func main() -> int {
+    let __foo: foo = new foo();
+    __foo.a = 50;
+    __foo.b = 50;
+    
+    let result_add: int = __foo.add();
+    let result_mul: int = __foo.mul();
+
+    println("Addition: ", result_add);
+    println("Multiplication: ", result_mul);
+
+    return EXIT_SUCCESS;
+} 
