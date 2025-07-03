@@ -1,0 +1,32 @@
+# Flast Module Cache
+# Module: "datetime.fls"
+# Generated: 1751530088
+# AST Nodes: 27
+
+FUNCTION: getHour (public: no)
+FUNCTION: getMinute (public: yes)
+FUNCTION: getSecond (public: yes)
+FUNCTION: getMillisecond (public: yes)
+FUNCTION: toTimeString (public: yes)
+FUNCTION: getYear (public: no)
+FUNCTION: getMonth (public: yes)
+FUNCTION: getDay (public: yes)
+FUNCTION: toDateString (public: no)
+FUNCTION: formatDate (public: yes)
+FUNCTION: fromTimestamp (public: no)
+FUNCTION: getYear (public: yes)
+FUNCTION: getMonth (public: yes)
+FUNCTION: getDay (public: yes)
+FUNCTION: getMonthName (public: yes)
+FUNCTION: getHour (public: yes)
+FUNCTION: getMinute (public: yes)
+FUNCTION: getSecond (public: yes)
+FUNCTION: getMillisecond (public: yes)
+FUNCTION: toString (public: yes)
+FUNCTION: format (public: yes)
+FUNCTION: getTimestamp (public: yes)
+FUNCTION: current_time_string (public: no)
+FUNCTION: current_date_string (public: yes)
+FUNCTION: create_datetime (public: yes)
+FUNCTION: format_datetime (public: yes)
+FUNCTION: c_usleep (public: no)

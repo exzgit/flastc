@@ -1,0 +1,23 @@
+import { 
+    Math 
+} from "./simmath/math.fls";
+
+import { 
+    Time 
+} from "../packages/time/datetime.fls";
+
+fn main() -> i32 {
+    let time: Time = new Time();
+    let first: string = time.now().toTimeString();
+
+    for let i: i64 in 1000000 {
+        println("Iterator: ", i);
+    }
+
+    let end: string = time.now().toTimeString();
+
+    println("first: ", first);
+    println("end: ", end);
+
+    return 0;
+}

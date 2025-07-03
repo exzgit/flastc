@@ -1,0 +1,163 @@
+// Standard Library for Flast
+// Provides standard collections, string operations, math utilities
+
+// List utilities
+pub fn list_push<T>(list: List<T>, item: T) -> List<T> {
+    list.push(item);
+    return list;
+}
+
+pub fn list_pop<T>(list: List<T>) -> T {
+    return list.pop();
+}
+
+pub fn list_length<T>(list: List<T>) -> i64 {
+    return list.len();
+}
+
+pub fn list_contains<T>(list: List<T>, item: T) -> bool {
+    for let i: i64 in list.len() {
+        if list[i] == item {
+            return true;
+        }
+    }
+    return false;
+}
+
+pub fn list_reverse<T>(list: List<T>) -> List<T> {
+    let reversed: List<T> = [];
+    for let i: i64 in list.len() {
+        let index: i64 = list.len() - 1 - i;
+        reversed.push(list[index]);
+    }
+    return reversed;
+}
+
+pub fn list_sort<T>(list: List<T>) -> List<T> {
+    let sorted: List<T> = list;
+    let n: i64 = sorted.len();
+    
+    for let i: i64 in n {
+        for let j: i64 in n - 1 - i {
+            if sorted[j] > sorted[j + 1] {
+                let temp: T = sorted[j];
+                sorted[j] = sorted[j + 1];
+                sorted[j + 1] = temp;
+            }
+        }
+    }
+    return sorted;
+}
+
+// Dictionary utilities
+pub fn dict_set<K, V>(dict: Map<K, V>, key: K, value: V) -> Map<K, V> {
+    dict[key] = value;
+    return dict;
+}
+
+pub fn dict_get<K, V>(dict: Map<K, V>, key: K) -> V {
+    return dict[key];
+}
+
+pub fn dict_has<K, V>(dict: Map<K, V>, key: K) -> bool {
+    return dict.contains(key);
+}
+
+pub fn dict_keys<K, V>(dict: Map<K, V>) -> List<K> {
+    return dict.keys();
+}
+
+pub fn dict_values<K, V>(dict: Map<K, V>) -> List<V> {
+    return dict.values();
+}
+
+pub fn dict_size<K, V>(dict: Map<K, V>) -> i64 {
+    return dict.len();
+}
+
+// String utilities
+pub fn str_length(s: String) -> i64 {
+    return s.len();
+}
+
+pub fn str_contains(s: String, substr: String) -> bool {
+    return s.contains(substr);
+}
+
+pub fn str_upper(s: String) -> String {
+    return s.toUpper();
+}
+
+pub fn str_lower(s: String) -> String {
+    return s.toLower();
+}
+
+pub fn str_trim(s: String) -> String {
+    return s.trim();
+}
+
+// Math utilities
+pub fn math_abs(x: f64) -> f64 {
+    if x < 0.0 {
+        return -x;
+    }
+    return x;
+}
+
+pub fn math_max(a: f64, b: f64) -> f64 {
+    if a > b {
+        return a;
+    }
+    return b;
+}
+
+pub fn math_min(a: f64, b: f64) -> f64 {
+    if a < b {
+        return a;
+    }
+    return b;
+}
+
+pub fn math_sqrt(x: f64) -> f64 {
+    if x < 0.0 {
+        return 0.0;
+    }
+    if x == 0.0 {
+        return 0.0;
+    }
+    
+    let guess: f64 = x / 2.0;
+    let epsilon: f64 = 0.000001;
+    
+    for let i: i64 in 100 { // Max 100 iterations
+        let new_guess: f64 = (guess + x / guess) / 2.0;
+        if math_abs(new_guess - guess) < epsilon {
+            return new_guess;
+        }
+        guess = new_guess;
+    }
+    
+    return guess;
+}
+
+// Type conversion utilities
+pub fn to_string<T>(value: T) -> String {
+    return value.toString();
+}
+
+pub fn parse_int(s: String) -> i64 {
+    return s.toi64();
+}
+
+pub fn parse_float(s: String) -> f64 {
+    return s.tof64();
+}
+
+// Range utilities
+pub fn range(start: i64, end: i64) -> List<i64> {
+    let result: List<i64> = [];
+    for let i: i64 in end - start {
+        result.push(start + i);
+    }
+    return result;
+} 

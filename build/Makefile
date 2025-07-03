@@ -156,24 +156,24 @@ acc_gen/fast:
 .PHONY : acc_gen/fast
 
 #=============================================================================
-# Target rules for targets named flastc
+# Target rules for targets named flast
 
 # Build rule for target.
-flastc: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 flastc
-.PHONY : flastc
+flast: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 flast
+.PHONY : flast
 
 # fast build rule for target.
-flastc/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/build
-.PHONY : flastc/fast
+flast/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/build
+.PHONY : flast/fast
 
 src/CodeGen.o: src/CodeGen.cpp.o
 .PHONY : src/CodeGen.o
 
 # target to build an object file
 src/CodeGen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/CodeGen.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/CodeGen.cpp.o
 .PHONY : src/CodeGen.cpp.o
 
 src/CodeGen.i: src/CodeGen.cpp.i
@@ -181,7 +181,7 @@ src/CodeGen.i: src/CodeGen.cpp.i
 
 # target to preprocess a source file
 src/CodeGen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/CodeGen.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/CodeGen.cpp.i
 .PHONY : src/CodeGen.cpp.i
 
 src/CodeGen.s: src/CodeGen.cpp.s
@@ -189,7 +189,7 @@ src/CodeGen.s: src/CodeGen.cpp.s
 
 # target to generate assembly for a file
 src/CodeGen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/CodeGen.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/CodeGen.cpp.s
 .PHONY : src/CodeGen.cpp.s
 
 src/Lexer.o: src/Lexer.cpp.o
@@ -197,7 +197,7 @@ src/Lexer.o: src/Lexer.cpp.o
 
 # target to build an object file
 src/Lexer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Lexer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Lexer.cpp.o
 .PHONY : src/Lexer.cpp.o
 
 src/Lexer.i: src/Lexer.cpp.i
@@ -205,7 +205,7 @@ src/Lexer.i: src/Lexer.cpp.i
 
 # target to preprocess a source file
 src/Lexer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Lexer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Lexer.cpp.i
 .PHONY : src/Lexer.cpp.i
 
 src/Lexer.s: src/Lexer.cpp.s
@@ -213,7 +213,7 @@ src/Lexer.s: src/Lexer.cpp.s
 
 # target to generate assembly for a file
 src/Lexer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Lexer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Lexer.cpp.s
 .PHONY : src/Lexer.cpp.s
 
 src/Parser.o: src/Parser.cpp.o
@@ -221,7 +221,7 @@ src/Parser.o: src/Parser.cpp.o
 
 # target to build an object file
 src/Parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Parser.cpp.o
 .PHONY : src/Parser.cpp.o
 
 src/Parser.i: src/Parser.cpp.i
@@ -229,7 +229,7 @@ src/Parser.i: src/Parser.cpp.i
 
 # target to preprocess a source file
 src/Parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Parser.cpp.i
 .PHONY : src/Parser.cpp.i
 
 src/Parser.s: src/Parser.cpp.s
@@ -237,7 +237,7 @@ src/Parser.s: src/Parser.cpp.s
 
 # target to generate assembly for a file
 src/Parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/Parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Parser.cpp.s
 .PHONY : src/Parser.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -245,7 +245,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -253,7 +253,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -261,7 +261,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -275,7 +275,7 @@ help:
 	@echo "... acc_gen"
 	@echo "... intrinsics_gen"
 	@echo "... omp_gen"
-	@echo "... flastc"
+	@echo "... flast"
 	@echo "... src/CodeGen.o"
 	@echo "... src/CodeGen.i"
 	@echo "... src/CodeGen.s"

@@ -30,18 +30,18 @@ file(GLOB_RECURSE SOURCES
 )
 
 # Create executable
-add_executable(flastc ${SOURCES})
+add_executable(flast ${SOURCES})
 
 # Link LLVM libraries and filesystem
-target_link_libraries(flastc ${llvm_libs})
+target_link_libraries(flast ${llvm_libs})
 
 # Link filesystem library for C++17
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_link_libraries(flastc stdc++fs)
+    target_link_libraries(flast stdc++fs)
 endif()
 
 # Include directories
-target_include_directories(flastc PRIVATE 
+target_include_directories(flast PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${LLVM_INCLUDE_DIRS}
 ) 

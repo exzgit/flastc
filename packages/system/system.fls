@@ -1,0 +1,133 @@
+// System Package for Flast
+// Provides system-level operations and process management
+
+// System control functions
+pub fn exit(code: i32) -> void {
+    // Exit the program with given code
+    extern "C" fn c_exit(code: i32) -> void;
+    c_exit(code);
+}
+
+pub fn sleep(milliseconds: i64) -> void {
+    // Sleep for given milliseconds
+    extern "C" fn c_usleep(microseconds: i64) -> void;
+    c_usleep(milliseconds * 1000);
+}
+
+pub fn sleep_seconds(seconds: i64) -> void {
+    // Sleep for given seconds
+    sleep(seconds * 1000);
+}
+
+// Environment operations
+pub fn get_env(name: String) -> String {
+    // Get environment variable
+    extern "C" fn c_getenv(name: *char) -> *char;
+    let result: *char = c_getenv(name.c_str());
+    if result == null {
+        return "";
+    }
+    return String::from_c_str(result);
+}
+
+pub fn set_env(name: String, value: String) -> bool {
+    // Set environment variable
+    extern "C" fn c_setenv(name: *char, value: *char, overwrite: i32) -> i32;
+    let result: i32 = c_setenv(name.c_str(), value.c_str(), 1);
+    return result == 0;
+}
+
+// Process information
+pub fn get_pid() -> i64 {
+    // Get current process ID
+    extern "C" fn c_getpid() -> i32;
+    return c_getpid().toi64();
+}
+
+pub fn get_username() -> String {
+    // Get current username
+    return get_env("USER");
+}
+
+pub fn get_home_dir() -> String {
+    // Get home directory
+    return get_env("HOME");
+}
+
+// Command execution
+pub fn execute(command: String) -> i32 {
+    // Execute system command
+    extern "C" fn c_system(command: *char) -> i32;
+    return c_system(command.c_str());
+}
+
+pub fn execute_silent(command: String) -> i32 {
+    // Execute system command silently
+    let silent_cmd: String = command + " > /dev/null 2>&1";
+    return execute(silent_cmd);
+}
+
+// Power management (requires appropriate permissions)
+pub fn shutdown() -> void {
+    // Shutdown the system
+    execute_silent("shutdown -h now");
+}
+
+pub fn restart() -> void {
+    // Restart the system
+    execute_silent("shutdown -r now");
+}
+
+pub fn shutdown_in(minutes: i64) -> void {
+    // Shutdown system after specified minutes
+    let cmd: String = "shutdown -h +" + minutes.toString();
+    execute_silent(cmd);
+}
+
+pub fn restart_in(minutes: i64) -> void {
+    // Restart system after specified minutes
+    let cmd: String = "shutdown -r +" + minutes.toString();
+    execute_silent(cmd);
+}
+
+pub fn cancel_shutdown() -> void {
+    // Cancel scheduled shutdown/restart
+    execute_silent("shutdown -c");
+}
+
+// File system operations
+pub fn file_exists(path: String) -> bool {
+    // Check if file exists
+    extern "C" fn c_access(path: *char, mode: i32) -> i32;
+    return c_access(path.c_str(), 0) == 0; // F_OK = 0
+}
+
+pub fn is_directory(path: String) -> bool {
+    // Check if path is directory
+    let cmd: String = "test -d " + path;
+    return execute_silent(cmd) == 0;
+}
+
+pub fn is_file(path: String) -> bool {
+    // Check if path is regular file
+    let cmd: String = "test -f " + path;
+    return execute_silent(cmd) == 0;
+}
+
+pub fn create_directory(path: String) -> bool {
+    // Create directory
+    let cmd: String = "mkdir -p " + path;
+    return execute_silent(cmd) == 0;
+}
+
+pub fn remove_file(path: String) -> bool {
+    // Remove file
+    let cmd: String = "rm -f " + path;
+    return execute_silent(cmd) == 0;
+}
+
+pub fn remove_directory(path: String) -> bool {
+    // Remove directory
+    let cmd: String = "rm -rf " + path;
+    return execute_silent(cmd) == 0;
+}

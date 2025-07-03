@@ -33,6 +33,7 @@ void printUsage(const char* programName) {
     std::cout << "  --ir           Print LLVM IR instead of compiling\n";
     std::cout << "  --tokens       Print tokens instead of compiling\n";
     std::cout << "  --ast          Print AST instead of compiling\n";
+    std::cout << "  -v, --version  Show version information\n";
     std::cout << "  -h, --help     Show this help message\n\n";
     std::cout << "Output Structure:\n";
     std::cout << "  .build/bin/    - Executable files (platform-specific extension)\n";
@@ -54,11 +55,17 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    // Check for help first
+    // Check for help and version first
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "-h" || arg == "--help") {
             printUsage(argv[0]);
+            return 0;
+        } else if (arg == "-v" || arg == "--version") {
+            std::cout << "===== FLASTC =====" << std::endl;
+            std::cout << "Version: 1.0.0" << std::endl;
+            std::cout << "Author: flastdev team" << std::endl;
+            std::cout << "Contact: officialbangezz@gmail.com" << std::endl;
             return 0;
         }
     }
@@ -126,7 +133,7 @@ int main(int argc, char* argv[]) {
         
         // Syntax analysis
         Parser parser(std::move(tokens));
-        auto ast = parser.parse();
+        auto ast = parser.parseProgram();
         
         if (printAST) {
             std::cout << "=== AST ===" << std::endl;

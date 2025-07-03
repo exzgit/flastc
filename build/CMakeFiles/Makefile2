@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /home/flast/Documents/dev/flast/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/flastc.dir/all
+all: CMakeFiles/flast.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -74,7 +74,7 @@ preinstall:
 clean: CMakeFiles/intrinsics_gen.dir/clean
 clean: CMakeFiles/omp_gen.dir/clean
 clean: CMakeFiles/acc_gen.dir/clean
-clean: CMakeFiles/flastc.dir/clean
+clean: CMakeFiles/flast.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -156,30 +156,30 @@ CMakeFiles/acc_gen.dir/clean:
 .PHONY : CMakeFiles/acc_gen.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/flastc.dir
+# Target rules for target CMakeFiles/flast.dir
 
 # All Build rule for target.
-CMakeFiles/flastc.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target flastc"
-.PHONY : CMakeFiles/flastc.dir/all
+CMakeFiles/flast.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target flast"
+.PHONY : CMakeFiles/flast.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/flastc.dir/rule: cmake_check_build_system
+CMakeFiles/flast.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/flast/Documents/dev/flast/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/flastc.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/flast.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/flast/Documents/dev/flast/build/CMakeFiles 0
-.PHONY : CMakeFiles/flastc.dir/rule
+.PHONY : CMakeFiles/flast.dir/rule
 
 # Convenience name for target.
-flastc: CMakeFiles/flastc.dir/rule
-.PHONY : flastc
+flast: CMakeFiles/flast.dir/rule
+.PHONY : flast
 
 # clean rule for target.
-CMakeFiles/flastc.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flastc.dir/build.make CMakeFiles/flastc.dir/clean
-.PHONY : CMakeFiles/flastc.dir/clean
+CMakeFiles/flast.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/clean
+.PHONY : CMakeFiles/flast.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
