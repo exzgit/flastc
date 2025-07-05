@@ -171,8 +171,8 @@ llvm::Type* CodeGenerator::getFlastType(const std::string& typeName) {
         return llvm::Type::getVoidTy(*context);
     } else {
         // Check if it's a class type
-        auto it = classes.find(typeName);
-        if (it != classes.end()) {
+        auto it = structs.find(typeName);
+        if (it != structs.end()) {
             return llvm::PointerType::get(it->second, 0);
         }
         // Default to i32
@@ -187,20 +187,20 @@ void CodeGenerator::generateCode(ProgramAST* program, const std::string& sourceF
     
     std::cout << "🔍 Total declarations found: " << program->declarations.size() << std::endl;
     
-    // First pass: Generate all class types (forward declarations)
-    std::cout << "🔍 First pass: Processing class types..." << std::endl;
+    // First pass: Generate all struct types (forward declarations)
+    std::cout << "🔍 First pass: Processing struct types..." << std::endl;
     for (auto& decl : program->declarations) {
-        if (auto classDecl = dynamic_cast<ClassDeclAST*>(decl.get())) {
-            std::cout << "🔍 Processing class: " << classDecl->name << std::endl;
-            // Create class type first
+        if (auto structDecl = dynamic_cast<StructDeclAST*>(decl.get())) {
+            std::cout << "🔍 Processing struct: " << structDecl->name << std::endl;
+            // Create struct type first
             std::vector<llvm::Type*> memberTypes;
-            for (auto& field : classDecl->fields) {
-                memberTypes.push_back(getFlastType(field.type->toString()));
+            for (auto& field : structDecl->fields) {
+                memberTypes.push_back(getFlastType(field.second->toString()));
             }
             
-            llvm::StructType* structType = llvm::StructType::create(*context, classDecl->name);
+            llvm::StructType* structType = llvm::StructType::create(*context, structDecl->name);
             structType->setBody(memberTypes);
-            classes[classDecl->name] = structType;
+            structs[structDecl->name] = structType;
         }
     }
     
@@ -224,12 +224,10 @@ void CodeGenerator::generateCode(ProgramAST* program, const std::string& sourceF
     std::cout << "🔍 Third pass: Processing functions..." << std::endl;
     for (auto& decl : program->declarations) {
         std::cout << "🔍 Checking declaration type..." << std::endl;
-        if (auto classDecl = dynamic_cast<ClassDeclAST*>(decl.get())) {
-            std::cout << "🔍 Processing class methods for: " << classDecl->name << std::endl;
-            // Generate methods
-            for (auto& method : classDecl->methods) {
-                codegen(method.get());
-            }
+        if (auto structDecl = dynamic_cast<StructDeclAST*>(decl.get())) {
+            std::cout << "🔍 Processing struct methods for: " << structDecl->name << std::endl;
+            // Generate methods (if any)
+            // Structs don't have methods by default, they use impl blocks
         } else if (auto funcDecl = dynamic_cast<FunctionDeclAST*>(decl.get())) {
             std::cout << "🔍 Processing function: " << funcDecl->name << std::endl;
             codegen(funcDecl);
@@ -244,16 +242,7 @@ void CodeGenerator::generateCode(ProgramAST* program, const std::string& sourceF
     // debugBuilder->finalize();
 }
 
-llvm::StructType* CodeGenerator::codegen(ClassDeclAST* cls) {
-    // Class types are now generated in the first pass of generateCode
-    // This method now just returns the existing struct type
-    auto it = classes.find(cls->name);
-    if (it != classes.end()) {
-        return it->second;
-    }
-    
-    throw std::runtime_error("Class type not found: " + cls->name);
-}
+
 
 llvm::Function* CodeGenerator::codegen(FunctionDeclAST* func) {
     // Create function signature
@@ -693,8 +682,8 @@ llvm::Value* CodeGenerator::codegenMethodCall(MethodCallExprAST* expr) {
 }
 
 llvm::Value* CodeGenerator::codegenNew(NewExprAST* expr) {
-    auto it = classes.find(expr->className);
-    if (it == classes.end()) {
+    auto it = structs.find(expr->className);
+    if (it == structs.end()) {
         throw std::runtime_error("Unknown class: " + expr->className);
     }
     
@@ -1074,6 +1063,12 @@ void CodeGenerator::processImportedFunctions(std::shared_ptr<ProgramAST> moduleA
                                            const std::vector<std::string>& specificImports, 
                                            bool isWildcard) {
     
+    std::cout << "🔍 Processing imports - specificImports: [";
+    for (const auto& imp : specificImports) {
+        std::cout << imp << " ";
+    }
+    std::cout << "], isWildcard: " << (isWildcard ? "true" : "false") << std::endl;
+    
     for (auto& decl : moduleAst->declarations) {
         if (auto funcDecl = dynamic_cast<FunctionDeclAST*>(decl.get())) {
             // Check if function should be imported
@@ -1099,44 +1094,6 @@ void CodeGenerator::processImportedFunctions(std::shared_ptr<ProgramAST> moduleA
                 // Generate code for the imported function
                 codegen(funcDecl);
                 std::cout << "✓ Imported function: " << funcDecl->name << std::endl;
-            }
-        } else if (auto classDecl = dynamic_cast<ClassDeclAST*>(decl.get())) {
-            // Handle class imports
-            bool shouldImport = false;
-            
-            if (isWildcard) {
-                // Import all public classes
-                shouldImport = classDecl->isPublic;
-            } else if (specificImports.empty()) {
-                // Default import (import first public class)
-                shouldImport = classDecl->isPublic;
-            } else {
-                // Named imports
-                for (const auto& importName : specificImports) {
-                    if (classDecl->name == importName && classDecl->isPublic) {
-                        shouldImport = true;
-                        break;
-                    }
-                }
-            }
-            
-            if (shouldImport) {
-                // First create the class type structure
-                std::vector<llvm::Type*> memberTypes;
-                for (auto& field : classDecl->fields) {
-                    memberTypes.push_back(getFlastType(field.type->toString()));
-                }
-                
-                llvm::StructType* structType = llvm::StructType::create(*context, classDecl->name);
-                structType->setBody(memberTypes);
-                classes[classDecl->name] = structType;
-                
-                // Then generate methods
-                for (auto& method : classDecl->methods) {
-                    codegen(method.get());
-                }
-                
-                std::cout << "✓ Imported class: " << classDecl->name << std::endl;
             }
         }
     }
@@ -1620,8 +1577,6 @@ void CodeGenerator::saveModuleCache(const std::string& modulePath, std::shared_p
             for (auto& decl : moduleAst->declarations) {
                 if (auto funcDecl = dynamic_cast<FunctionDeclAST*>(decl.get())) {
                     cacheFile << "FUNCTION: " << funcDecl->name << " (public: " << (funcDecl->isPublic ? "yes" : "no") << ")\n";
-                } else if (auto classDecl = dynamic_cast<ClassDeclAST*>(decl.get())) {
-                    cacheFile << "CLASS: " << classDecl->name << " (public: " << (classDecl->isPublic ? "yes" : "no") << ")\n";
                 }
             }
             
@@ -1706,20 +1661,6 @@ void CodeGenerator::generateModuleObjectFile(const std::string& modulePath, std:
                         stubFile << "/* Stub for function: " << funcDecl->name << " */\n";
                         stubFile << "int __module_" << stubName << "_stub() { return 0; }\n\n";
                         stubNames.insert(stubName);
-                    }
-                }
-            } else if (auto classDecl = dynamic_cast<ClassDeclAST*>(decl.get())) {
-                if (classDecl->isPublic) {
-                    // Generate stubs for class methods
-                    for (auto& method : classDecl->methods) {
-                        if (method->isPublic) {
-                            std::string methodName = classDecl->name + "_" + method->name;
-                            if (stubNames.count(methodName) == 0) {
-                                stubFile << "/* Stub for method: " << classDecl->name << "." << method->name << " */\n";
-                                stubFile << "int __module_" << methodName << "_stub() { return 0; }\n\n";
-                                stubNames.insert(methodName);
-                            }
-                        }
                     }
                 }
             }

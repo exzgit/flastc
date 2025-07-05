@@ -9,8 +9,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/flast/Documents/dev/flast/src/CodeGen.cpp" "CMakeFiles/flast.dir/src/CodeGen.cpp.o" "gcc" "CMakeFiles/flast.dir/src/CodeGen.cpp.o.d"
+  "/home/flast/Documents/dev/flast/src/ErrorHandler.cpp" "CMakeFiles/flast.dir/src/ErrorHandler.cpp.o" "gcc" "CMakeFiles/flast.dir/src/ErrorHandler.cpp.o.d"
   "/home/flast/Documents/dev/flast/src/Lexer.cpp" "CMakeFiles/flast.dir/src/Lexer.cpp.o" "gcc" "CMakeFiles/flast.dir/src/Lexer.cpp.o.d"
   "/home/flast/Documents/dev/flast/src/Parser.cpp" "CMakeFiles/flast.dir/src/Parser.cpp.o" "gcc" "CMakeFiles/flast.dir/src/Parser.cpp.o.d"
+  "/home/flast/Documents/dev/flast/src/SemanticAnalyzer.cpp" "CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o" "gcc" "CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o.d"
   "/home/flast/Documents/dev/flast/src/main.cpp" "CMakeFiles/flast.dir/src/main.cpp.o" "gcc" "CMakeFiles/flast.dir/src/main.cpp.o.d"
   )
 

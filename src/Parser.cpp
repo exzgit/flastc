@@ -16,6 +16,7 @@ Token& Parser::peek() {
     return tokens[current];
 }
 
+
 Token& Parser::peekNext() {
     if (current + 1 >= tokens.size()) {
         static Token eof(TokenType::TOK_EOF, "", 0, 0);
@@ -66,12 +67,40 @@ void Parser::consume(TokenType type, const std::string& message) {
 
 void Parser::error(const std::string& message) {
     Token& current_token = peek();
-    errors.emplace_back(message, current_token.line, current_token.column);
+    // Get line content from the original source
+    std::string lineContent = "";
+    if (!tokens.empty() && current < tokens.size()) {
+        // Try to find the line content from the token
+        for (const auto& token : tokens) {
+            if (token.line == current_token.line) {
+                // This is a simplified approach - in a real implementation,
+                // you'd want to store the original source lines
+                lineContent = "// Line " + std::to_string(token.line);
+                break;
+            }
+        }
+    }
+    ErrorContext context(fileName, current_token.line, current_token.column, lineContent, current_token.value);
+    REPORT_ERROR(ErrorCode::INVALID_EXPRESSION, message, context);
 }
 
 ParseError Parser::parseError(const std::string& message) {
     Token& current_token = peek();
-    error(message);
+    // Get line content from the original source
+    std::string lineContent = "";
+    if (!tokens.empty() && current < tokens.size()) {
+        // Try to find the line content from the token
+        for (const auto& token : tokens) {
+            if (token.line == current_token.line) {
+                // This is a simplified approach - in a real implementation,
+                // you'd want to store the original source lines
+                lineContent = "// Line " + std::to_string(token.line);
+                break;
+            }
+        }
+    }
+    ErrorContext context(fileName, current_token.line, current_token.column, lineContent, current_token.value);
+    REPORT_ERROR(ErrorCode::INVALID_EXPRESSION, message, context);
     return ParseError(message, current_token.line, current_token.column);
 }
 
@@ -82,12 +111,12 @@ void Parser::synchronize() {
         if (previous().type == TokenType::TOK_SEMICOLON) return;
         
         switch (peek().type) {
-            case TokenType::TOK_FN:
+            case TokenType::TOK_FUNC:
             case TokenType::TOK_STRUCT:
             case TokenType::TOK_ENUM:
             case TokenType::TOK_TRAIT:
             case TokenType::TOK_IMPL:
-            case TokenType::TOK_CLASS:
+
             case TokenType::TOK_LET:
             case TokenType::TOK_IF:
             case TokenType::TOK_WHILE:
@@ -136,7 +165,7 @@ std::shared_ptr<DeclAST> Parser::parseDeclaration() {
                 linkage = advance().value;
             }
             
-            if (check(TokenType::TOK_FN)) {
+            if (check(TokenType::TOK_FUNC)) {
                 auto func = parseFunctionDecl();
                 func->isExtern = true;
                 func->externLang = linkage;
@@ -148,7 +177,7 @@ std::shared_ptr<DeclAST> Parser::parseDeclaration() {
         }
         
         // Declaration types
-        if (check(TokenType::TOK_FN)) {
+        if (check(TokenType::TOK_FUNC)) {
             auto func = parseFunctionDecl();
             func->isPublic = isPublic;
             func->isStatic = isStatic;
@@ -160,11 +189,7 @@ std::shared_ptr<DeclAST> Parser::parseDeclaration() {
         if (check(TokenType::TOK_ENUM)) return parseEnumDecl();
         if (check(TokenType::TOK_TRAIT)) return parseTraitDecl();
         if (check(TokenType::TOK_IMPL)) return parseImplDecl();
-        if (check(TokenType::TOK_CLASS)) {
-            auto classDecl = parseClassDecl();
-            classDecl->isPublic = isPublic;
-            return classDecl;
-        }
+
         if (check(TokenType::TOK_IMPORT) || check(TokenType::TOK_USE)) return parseImportDecl();
         if (check(TokenType::TOK_MOD)) return parseModuleDecl();
         
@@ -182,7 +207,7 @@ std::shared_ptr<DeclAST> Parser::parseDeclaration() {
 // ==================== FUNCTION DECLARATION (Rust-like) ====================
 
 std::shared_ptr<FunctionDeclAST> Parser::parseFunctionDecl() {
-    consume(TokenType::TOK_FN, "Expected 'fn'");
+    consume(TokenType::TOK_FUNC, "Expected 'fn'");
     
     if (!check(TokenType::TOK_IDENTIFIER)) {
         throw parseError("Expected function name");
@@ -582,7 +607,7 @@ std::shared_ptr<ExprAST> Parser::parsePrimaryExpression() {
     }
     
     // Null values
-    if (check(TokenType::TOK_NULL) || check(TokenType::TOK_NONE)) {
+    if (check(TokenType::TOK_NULL_VALUE) || check(TokenType::TOK_NONE)) {
         return parseNullLiteral();
     }
     
@@ -707,32 +732,114 @@ bool Parser::isAssignmentOperator(TokenType type) {
 }
 
 std::shared_ptr<TypeInfo> Parser::parseType() {
-    if (match({TokenType::TOK_I8})) return std::make_shared<TypeInfo>(FlastType::I8);
-    if (match({TokenType::TOK_I16})) return std::make_shared<TypeInfo>(FlastType::I16);
-    if (match({TokenType::TOK_I32})) return std::make_shared<TypeInfo>(FlastType::I32);
-    if (match({TokenType::TOK_I64})) return std::make_shared<TypeInfo>(FlastType::I64);
-    if (match({TokenType::TOK_U8})) return std::make_shared<TypeInfo>(FlastType::U8);
-    if (match({TokenType::TOK_U16})) return std::make_shared<TypeInfo>(FlastType::U16);
-    if (match({TokenType::TOK_U32})) return std::make_shared<TypeInfo>(FlastType::U32);
-    if (match({TokenType::TOK_U64})) return std::make_shared<TypeInfo>(FlastType::U64);
-    if (match({TokenType::TOK_F32})) return std::make_shared<TypeInfo>(FlastType::F32);
-    if (match({TokenType::TOK_F64})) return std::make_shared<TypeInfo>(FlastType::F64);
+    // Parse primitive types
+    if (match({TokenType::TOK_INT8})) return std::make_shared<TypeInfo>(FlastType::I8);
+    if (match({TokenType::TOK_INT16})) return std::make_shared<TypeInfo>(FlastType::I16);
+    if (match({TokenType::TOK_INT32})) return std::make_shared<TypeInfo>(FlastType::I32);
+    if (match({TokenType::TOK_INT64})) return std::make_shared<TypeInfo>(FlastType::I64);
+    if (match({TokenType::TOK_INT128})) return std::make_shared<TypeInfo>(FlastType::I128);
+    if (match({TokenType::TOK_UINT8})) return std::make_shared<TypeInfo>(FlastType::U8);
+    if (match({TokenType::TOK_UINT16})) return std::make_shared<TypeInfo>(FlastType::U16);
+    if (match({TokenType::TOK_UINT32})) return std::make_shared<TypeInfo>(FlastType::U32);
+    if (match({TokenType::TOK_UINT64})) return std::make_shared<TypeInfo>(FlastType::U64);
+    if (match({TokenType::TOK_UINT128})) return std::make_shared<TypeInfo>(FlastType::U128);
+    if (match({TokenType::TOK_FLOAT32})) return std::make_shared<TypeInfo>(FlastType::F32);
+    if (match({TokenType::TOK_FLOAT64})) return std::make_shared<TypeInfo>(FlastType::F64);
     if (match({TokenType::TOK_BOOL_TYPE})) return std::make_shared<TypeInfo>(FlastType::BOOL);
     if (match({TokenType::TOK_STRING_TYPE})) return std::make_shared<TypeInfo>(FlastType::STRING);
-    if (match({TokenType::TOK_STR})) return std::make_shared<TypeInfo>(FlastType::STR);
     if (match({TokenType::TOK_CHAR_TYPE})) return std::make_shared<TypeInfo>(FlastType::CHAR);
     if (match({TokenType::TOK_VOID})) return std::make_shared<TypeInfo>(FlastType::VOID);
+    if (match({TokenType::TOK_POINTER})) return std::make_shared<TypeInfo>(FlastType::REF);
     
-    // Self type (for class methods)
-    if (match({TokenType::TOK_SELF})) return std::make_shared<TypeInfo>(FlastType::SELF);
+    // Self type (for struct methods)
+    if (match({TokenType::TOK_SELF_TYPE})) return std::make_shared<TypeInfo>(FlastType::SELF);
     
-    // User-defined types
-    if (check(TokenType::TOK_IDENTIFIER)) {
-        std::string typeName = advance().value;
-        return std::make_shared<TypeInfo>(FlastType::STRUCT, typeName);
+    // Auto type inference
+    if (match({TokenType::TOK_AUTO})) return std::make_shared<TypeInfo>(FlastType::AUTO);
+    
+    // Parse complex type expressions (e.g., lib.merk.car, std::vector<int>)
+    return parseComplexType();
+}
+
+std::shared_ptr<TypeInfo> Parser::parseComplexType() {
+    // Start with the base identifier
+    if (!check(TokenType::TOK_IDENTIFIER)) {
+        throw parseError("Expected type identifier");
     }
     
-    throw parseError("Expected type name");
+    std::string baseName = advance().value;
+    auto typeInfo = std::make_shared<TypeInfo>(FlastType::STRUCT, baseName);
+    
+    // Parse qualified names (e.g., lib.merk.car)
+    while (match({TokenType::TOK_DOT})) {
+        if (!check(TokenType::TOK_IDENTIFIER)) {
+            throw parseError("Expected identifier after '.' in type name");
+        }
+        std::string qualifier = advance().value;
+        typeInfo->className += "." + qualifier;
+    }
+    
+    // Parse generic parameters (e.g., vector<int>, map<string, int>)
+    if (match({TokenType::TOK_LESS})) {
+        typeInfo->parameters = parseGenericParameters();
+        consume(TokenType::TOK_GREATER, "Expected '>' after generic parameters");
+    }
+    
+    // Parse pointer/reference modifiers
+    while (true) {
+        if (match({TokenType::TOK_MULTIPLY})) {
+            typeInfo->isPointer = true;
+        } else if (match({TokenType::TOK_REF})) {
+            typeInfo->isReference = true;
+        } else if (match({TokenType::TOK_CONSTANT})) {
+            typeInfo->isConst = true;
+        } else {
+            break;
+        }
+    }
+    
+    // Parse optional type (e.g., option<int>)
+    if (match({TokenType::TOK_OPTION})) {
+        consume(TokenType::TOK_LESS, "Expected '<' after 'option'");
+        auto innerType = parseType();
+        consume(TokenType::TOK_GREATER, "Expected '>' after option type");
+        typeInfo = std::make_shared<TypeInfo>(FlastType::OPTION);
+        typeInfo->parameters.push_back(innerType);
+    }
+    
+    // Parse result type (e.g., result<int, string>)
+    if (match({TokenType::TOK_RESULT})) {
+        consume(TokenType::TOK_LESS, "Expected '<' after 'result'");
+        auto okType = parseType();
+        consume(TokenType::TOK_COMMA, "Expected ',' between result types");
+        auto errType = parseType();
+        consume(TokenType::TOK_GREATER, "Expected '>' after result types");
+        typeInfo = std::make_shared<TypeInfo>(FlastType::RESULT);
+        typeInfo->parameters.push_back(okType);
+        typeInfo->parameters.push_back(errType);
+    }
+    
+    // Parse array types (e.g., array<int, 10>)
+    if (match({TokenType::TOK_ARRAY})) {
+        consume(TokenType::TOK_LESS, "Expected '<' after 'array'");
+        auto elementType = parseType();
+        consume(TokenType::TOK_COMMA, "Expected ',' between array type and size");
+        
+        // Parse array size (can be a number or expression)
+        if (check(TokenType::TOK_NUMBER)) {
+            std::string sizeStr = advance().value;
+            // For now, we'll store the size as a string in className
+            // In a full implementation, you'd want to parse this as an expression
+            typeInfo = std::make_shared<TypeInfo>(FlastType::ARRAY);
+            typeInfo->parameters.push_back(elementType);
+            typeInfo->className = sizeStr;
+        } else {
+            throw parseError("Expected array size");
+        }
+        consume(TokenType::TOK_GREATER, "Expected '>' after array type");
+    }
+    
+    return typeInfo;
 }
 
 std::vector<ParameterAST> Parser::parseParameterList() {
@@ -818,7 +925,7 @@ std::shared_ptr<TraitDeclAST> Parser::parseTraitDecl() {
     std::vector<std::shared_ptr<DeclAST>> methods;
     
     while (!check(TokenType::TOK_RBRACE) && !isAtEnd()) {
-        if (check(TokenType::TOK_FN)) {
+        if (check(TokenType::TOK_FUNC)) {
             methods.push_back(parseFunctionDecl());
         } else {
             advance(); // Skip unknown tokens
@@ -840,7 +947,7 @@ std::shared_ptr<ImplDeclAST> Parser::parseImplDecl() {
     std::vector<std::shared_ptr<DeclAST>> methods;
     
     while (!check(TokenType::TOK_RBRACE) && !isAtEnd()) {
-        if (check(TokenType::TOK_FN)) {
+        if (check(TokenType::TOK_FUNC)) {
             methods.push_back(parseFunctionDecl());
         } else {
             advance(); // Skip unknown tokens
@@ -852,32 +959,7 @@ std::shared_ptr<ImplDeclAST> Parser::parseImplDecl() {
     return std::make_shared<ImplDeclAST>(targetType, methods);
 }
 
-std::shared_ptr<ClassDeclAST> Parser::parseClassDecl() {
-    consume(TokenType::TOK_CLASS, "Expected 'class'");
-    
-    if (!check(TokenType::TOK_IDENTIFIER)) {
-        throw parseError("Expected class name");
-    }
-    
-    std::string name = advance().value;
-    
-    consume(TokenType::TOK_LBRACE, "Expected '{' after class name");
-    
-    std::vector<FieldDeclAST> fields;
-    std::vector<std::shared_ptr<FunctionDeclAST>> methods;
-    
-    while (!check(TokenType::TOK_RBRACE) && !isAtEnd()) {
-        if (check(TokenType::TOK_FN)) {
-            methods.push_back(parseFunctionDecl());
-        } else {
-            advance(); // Skip field parsing for now
-        }
-    }
-    
-    consume(TokenType::TOK_RBRACE, "Expected '}' after class body");
-    
-    return std::make_shared<ClassDeclAST>(name, "", std::vector<std::string>(), fields, methods);
-}
+
 
 std::shared_ptr<ImportDeclAST> Parser::parseImportDecl() {
     advance(); // consume 'import' or 'use'
@@ -964,8 +1046,6 @@ std::shared_ptr<VarDeclStmtAST> Parser::parseVarDecl() {
     if (!isConst) {
         consume(TokenType::TOK_LET, "Expected 'let' or 'const'");
     }
-    
-    bool isMutable = match({TokenType::TOK_MUT});
     
     if (!check(TokenType::TOK_IDENTIFIER)) {
         throw parseError("Expected variable name");

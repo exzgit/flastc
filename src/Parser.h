@@ -2,6 +2,7 @@
 #include "Token.h"
 #include "AST.h"
 #include "SemanticAnalyzer.h"
+#include "ErrorHandler.h"
 #include <vector>
 #include <memory>
 #include <unordered_map>
@@ -46,6 +47,7 @@ private:
     
     // Type parsing
     std::shared_ptr<TypeInfo> parseType();
+    std::shared_ptr<TypeInfo> parseComplexType();
     std::shared_ptr<TypeInfo> parseGenericType();
     std::vector<std::shared_ptr<TypeInfo>> parseGenericParameters();
     
@@ -57,12 +59,11 @@ public:
     
     // Declaration parsing (Rust-like)
     std::shared_ptr<DeclAST> parseDeclaration();
-    std::shared_ptr<FunctionDeclAST> parseFunctionDecl();  // fn keyword
+    std::shared_ptr<FunctionDeclAST> parseFunctionDecl();  // func keyword
     std::shared_ptr<StructDeclAST> parseStructDecl();     // struct keyword  
     std::shared_ptr<EnumDeclAST> parseEnumDecl();         // enum keyword
     std::shared_ptr<TraitDeclAST> parseTraitDecl();       // trait keyword
     std::shared_ptr<ImplDeclAST> parseImplDecl();         // impl keyword
-    std::shared_ptr<ClassDeclAST> parseClassDecl();       // class keyword
     std::shared_ptr<ImportDeclAST> parseImportDecl();     // import/use keywords
     std::shared_ptr<ModuleDeclAST> parseModuleDecl();     // mod keyword
     

@@ -2,6 +2,7 @@
 #include <cctype>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 
 Lexer::Lexer(const std::string& input) : input(input), position(0), current(0), line(1), column(1) {
     initializeKeywords();
@@ -9,48 +10,39 @@ Lexer::Lexer(const std::string& input) : input(input), position(0), current(0), 
 }
 
 void Lexer::initializeKeywords() {
-    // Rust-like function declaration
-    keywords["fn"] = TokenType::TOK_FN;
+    // FLAST-style function declaration
+    keywords["func"] = TokenType::TOK_FUNC;
     keywords["return"] = TokenType::TOK_RETURN;
-    keywords["pub"] = TokenType::TOK_PUB;
-    keywords["priv"] = TokenType::TOK_PRIV;
-    keywords["prot"] = TokenType::TOK_PROT;
+    keywords["public"] = TokenType::TOK_PUBLIC;
+    keywords["private"] = TokenType::TOK_PRIVATE;
+    keywords["protected"] = TokenType::TOK_PROTECTED;
     keywords["static"] = TokenType::TOK_STATIC;
-    keywords["const"] = TokenType::TOK_CONST;
-    keywords["mut"] = TokenType::TOK_MUT;
+    keywords["constant"] = TokenType::TOK_CONSTANT;
+    keywords["mutable"] = TokenType::TOK_MUTABLE;
     keywords["unsafe"] = TokenType::TOK_UNSAFE;
 
     // Control flow
     keywords["if"] = TokenType::TOK_IF;
     keywords["else"] = TokenType::TOK_ELSE;
-    keywords["elif"] = TokenType::TOK_ELIF;
+    keywords["elseif"] = TokenType::TOK_ELSEIF;
     keywords["while"] = TokenType::TOK_WHILE;
     keywords["for"] = TokenType::TOK_FOR;
     keywords["loop"] = TokenType::TOK_LOOP;
     keywords["break"] = TokenType::TOK_BREAK;
     keywords["continue"] = TokenType::TOK_CONTINUE;
-    keywords["match"] = TokenType::TOK_MATCH;
+    keywords["switch"] = TokenType::TOK_SWITCH;
     keywords["case"] = TokenType::TOK_CASE;
     keywords["default"] = TokenType::TOK_DEFAULT;
 
-    // Enhanced OOP
+    // Data Types (Rust-like)
     keywords["struct"] = TokenType::TOK_STRUCT;
-    keywords["class"] = TokenType::TOK_CLASS;
-    keywords["interface"] = TokenType::TOK_INTERFACE;
-    keywords["trait"] = TokenType::TOK_TRAIT;
-    keywords["impl"] = TokenType::TOK_IMPL;
     keywords["enum"] = TokenType::TOK_ENUM;
     keywords["union"] = TokenType::TOK_UNION;
-    keywords["extends"] = TokenType::TOK_EXTENDS;
-    keywords["implements"] = TokenType::TOK_IMPLEMENTS;
-    keywords["super"] = TokenType::TOK_SUPER;
+    keywords["impl"] = TokenType::TOK_IMPL;
+    keywords["trait"] = TokenType::TOK_TRAIT;
+    keywords["where"] = TokenType::TOK_WHERE;
     keywords["self"] = TokenType::TOK_SELF;
     keywords["Self"] = TokenType::TOK_SELF_TYPE;
-    keywords["where"] = TokenType::TOK_WHERE;
-    keywords["abstract"] = TokenType::TOK_ABSTRACT;
-    keywords["virtual"] = TokenType::TOK_VIRTUAL;
-    keywords["override"] = TokenType::TOK_OVERRIDE;
-    keywords["final"] = TokenType::TOK_FINAL;
 
     // Variables and types
     keywords["let"] = TokenType::TOK_LET;
@@ -58,35 +50,35 @@ void Lexer::initializeKeywords() {
     keywords["auto"] = TokenType::TOK_AUTO;
     keywords["typeof"] = TokenType::TOK_TYPEOF;
     keywords["sizeof"] = TokenType::TOK_SIZEOF;
-
-    // Rust-like primitive types
-    keywords["i8"] = TokenType::TOK_I8;
-    keywords["i16"] = TokenType::TOK_I16;
-    keywords["i32"] = TokenType::TOK_I32;
-    keywords["i64"] = TokenType::TOK_I64;
-    keywords["i128"] = TokenType::TOK_I128;
-    keywords["u8"] = TokenType::TOK_U8;
-    keywords["u16"] = TokenType::TOK_U16;
-    keywords["u32"] = TokenType::TOK_U32;
-    keywords["u64"] = TokenType::TOK_U64;
-    keywords["u128"] = TokenType::TOK_U128;
-    keywords["f32"] = TokenType::TOK_F32;
-    keywords["f64"] = TokenType::TOK_F64;
+    
+    // Primitive types
+    keywords["int8"] = TokenType::TOK_INT8;
+    keywords["int16"] = TokenType::TOK_INT16;
+    keywords["int32"] = TokenType::TOK_INT32;
+    keywords["int64"] = TokenType::TOK_INT64;
+    keywords["int128"] = TokenType::TOK_INT128;
+    keywords["uint8"] = TokenType::TOK_UINT8;
+    keywords["uint16"] = TokenType::TOK_UINT16;
+    keywords["uint32"] = TokenType::TOK_UINT32;
+    keywords["uint64"] = TokenType::TOK_UINT64;
+    keywords["uint128"] = TokenType::TOK_UINT128;
+    keywords["float32"] = TokenType::TOK_FLOAT32;
+    keywords["float64"] = TokenType::TOK_FLOAT64;
     keywords["char"] = TokenType::TOK_CHAR_TYPE;
-    keywords["str"] = TokenType::TOK_STR;
-    keywords["String"] = TokenType::TOK_STRING_TYPE;
+    keywords["string"] = TokenType::TOK_STRING_TYPE;
     keywords["bool"] = TokenType::TOK_BOOL_TYPE;
     keywords["void"] = TokenType::TOK_VOID;
+    keywords["ptr"] = TokenType::TOK_POINTER;
 
     // Collection types
-    keywords["Vec"] = TokenType::TOK_VEC;
-    keywords["Array"] = TokenType::TOK_ARRAY;
+    keywords["array"] = TokenType::TOK_ARRAY;
+    keywords["list"] = TokenType::TOK_LIST;
     keywords["slice"] = TokenType::TOK_SLICE;
-    keywords["Map"] = TokenType::TOK_MAP;
-    keywords["Set"] = TokenType::TOK_SET;
+    keywords["map"] = TokenType::TOK_MAP;
+    keywords["set"] = TokenType::TOK_SET;
     keywords["tuple"] = TokenType::TOK_TUPLE;
-    keywords["Option"] = TokenType::TOK_OPTION;
-    keywords["Result"] = TokenType::TOK_RESULT;
+    keywords["option"] = TokenType::TOK_OPTION;
+    keywords["result"] = TokenType::TOK_RESULT;
 
     // Import/Export (TypeScript-like)
     keywords["import"] = TokenType::TOK_IMPORT;
@@ -98,8 +90,8 @@ void Lexer::initializeKeywords() {
     keywords["mod"] = TokenType::TOK_MOD;
     keywords["crate"] = TokenType::TOK_CRATE;
 
-    // Memory & Ownership (Rust-like)
-    keywords["Box"] = TokenType::TOK_BOX;
+    // Memory & Ownership (FLAST-style)
+    keywords["box"] = TokenType::TOK_BOX;
     keywords["ref"] = TokenType::TOK_REF;
     keywords["deref"] = TokenType::TOK_DEREF;
     keywords["move"] = TokenType::TOK_MOVE;
@@ -114,16 +106,16 @@ void Lexer::initializeKeywords() {
     keywords["await"] = TokenType::TOK_AWAIT;
     keywords["spawn"] = TokenType::TOK_SPAWN;
     keywords["thread"] = TokenType::TOK_THREAD;
-    keywords["Mutex"] = TokenType::TOK_MUTEX;
-    keywords["RwLock"] = TokenType::TOK_RWLOCK;
-    keywords["Channel"] = TokenType::TOK_CHANNEL;
-    keywords["Send"] = TokenType::TOK_SEND;
-    keywords["Sync"] = TokenType::TOK_SYNC;
+    keywords["mutex"] = TokenType::TOK_MUTEX;
+    keywords["rwlock"] = TokenType::TOK_RWLOCK;
+    keywords["channel"] = TokenType::TOK_CHANNEL;
+    keywords["send"] = TokenType::TOK_SEND;
+    keywords["sync"] = TokenType::TOK_SYNC;
 
     // External & FFI
     keywords["extern"] = TokenType::TOK_EXTERN;
-    keywords["C"] = TokenType::TOK_C;
-    keywords["Cpp"] = TokenType::TOK_CPP;
+    keywords["c"] = TokenType::TOK_C;
+    keywords["cpp"] = TokenType::TOK_CPP;
     keywords["cdecl"] = TokenType::TOK_CDECL;
     keywords["stdcall"] = TokenType::TOK_STDCALL;
     keywords["fastcall"] = TokenType::TOK_FASTCALL;
@@ -145,16 +137,14 @@ void Lexer::initializeKeywords() {
     keywords["or"] = TokenType::TOK_OR;
     keywords["xor"] = TokenType::TOK_XOR;
     keywords["true"] = TokenType::TOK_TRUE;
-    keywords["false"] = TokenType::TOK_FALSE;
-    keywords["null"] = TokenType::TOK_NULL;
-    keywords["None"] = TokenType::TOK_NONE;
-    keywords["Some"] = TokenType::TOK_SOME;
-    keywords["Ok"] = TokenType::TOK_OK;
-    keywords["Err"] = TokenType::TOK_ERR;
+    keywords["false"] = TokenType::TOK_FALSE; 
+    keywords["null"] = TokenType::TOK_NULL_VALUE;
+    keywords["none"] = TokenType::TOK_NONE;
+    keywords["some"] = TokenType::TOK_SOME;
+    keywords["ok"] = TokenType::TOK_OK;
+    keywords["err"] = TokenType::TOK_ERR;
 
     // Built-in functions
-    keywords["println"] = TokenType::TOK_PRINTLN;
-    keywords["print"] = TokenType::TOK_PRINT;
     keywords["assert"] = TokenType::TOK_ASSERT;
     keywords["debug_assert"] = TokenType::TOK_DEBUG_ASSERT;
     keywords["unreachable"] = TokenType::TOK_UNREACHABLE;
@@ -549,8 +539,10 @@ Token Lexer::number() {
                 }
             }
         } else {
-            throw std::runtime_error("Invalid scientific notation at line " + 
-                                   std::to_string(line) + ", column " + std::to_string(column));
+            std::string lineContent = getCurrentLineContent();
+            ErrorContext context("", line, column, lineContent, "");
+            REPORT_ERROR(ErrorCode::INVALID_NUMBER, "Invalid scientific notation", context);
+            throw std::runtime_error("Invalid scientific notation");
         }
     }
     
@@ -587,8 +579,10 @@ Token Lexer::stringLiteral(char quote) {
     }
     
     if (isAtEnd()) {
-        throw std::runtime_error("Unterminated string at line " + 
-                               std::to_string(startLine) + ", column " + std::to_string(startColumn));
+        std::string lineContent = getCurrentLineContent();
+        ErrorContext context("", startLine, startColumn, lineContent, "");
+        REPORT_ERROR(ErrorCode::UNTERMINATED_STRING, "", context);
+        throw std::runtime_error("Unterminated string");
     }
     
     advance(); // consume closing quote
@@ -620,8 +614,10 @@ Token Lexer::templateString() {
     }
     
     if (isAtEnd()) {
-        throw std::runtime_error("Unterminated template string at line " + 
-                               std::to_string(startLine) + ", column " + std::to_string(startColumn));
+        std::string lineContent = getCurrentLineContent();
+        ErrorContext context("", startLine, startColumn, lineContent, "");
+        REPORT_ERROR(ErrorCode::UNTERMINATED_STRING, "Unterminated template string", context);
+        throw std::runtime_error("Unterminated template string");
     }
     
     advance(); // consume closing backtick
@@ -698,6 +694,21 @@ void Lexer::skipComment() {
 
 bool Lexer::isAtEnd() {
     return current >= input.length();
+}
+
+std::string Lexer::getCurrentLineContent() const {
+    std::stringstream ss(input);
+    std::string line;
+    int currentLine = 1;
+    
+    while (std::getline(ss, line)) {
+        if (currentLine == this->line) {
+            return line;
+        }
+        currentLine++;
+    }
+    
+    return "";
 }
 
 bool Lexer::isAlpha(char c) {

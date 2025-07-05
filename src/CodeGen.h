@@ -40,7 +40,7 @@ private:
     // Symbol tables
     std::unordered_map<std::string, llvm::Value*> namedValues;
     std::unordered_map<std::string, llvm::Function*> functions;
-    std::unordered_map<std::string, llvm::StructType*> classes;
+    std::unordered_map<std::string, llvm::StructType*> structs;
     
     // Module system
     std::unordered_map<std::string, std::shared_ptr<ProgramAST>> moduleCache;
@@ -70,7 +70,7 @@ private:
     llvm::Value* codegen(ExprAST* expr);
     llvm::Value* codegen(StmtAST* stmt);
     llvm::Function* codegen(FunctionDeclAST* func);
-    llvm::StructType* codegen(ClassDeclAST* cls);
+
     void codegen(ImportDeclAST* importDecl);
     
     // Module loading

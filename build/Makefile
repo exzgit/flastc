@@ -192,6 +192,30 @@ src/CodeGen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/CodeGen.cpp.s
 .PHONY : src/CodeGen.cpp.s
 
+src/ErrorHandler.o: src/ErrorHandler.cpp.o
+.PHONY : src/ErrorHandler.o
+
+# target to build an object file
+src/ErrorHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/ErrorHandler.cpp.o
+.PHONY : src/ErrorHandler.cpp.o
+
+src/ErrorHandler.i: src/ErrorHandler.cpp.i
+.PHONY : src/ErrorHandler.i
+
+# target to preprocess a source file
+src/ErrorHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/ErrorHandler.cpp.i
+.PHONY : src/ErrorHandler.cpp.i
+
+src/ErrorHandler.s: src/ErrorHandler.cpp.s
+.PHONY : src/ErrorHandler.s
+
+# target to generate assembly for a file
+src/ErrorHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/ErrorHandler.cpp.s
+.PHONY : src/ErrorHandler.cpp.s
+
 src/Lexer.o: src/Lexer.cpp.o
 .PHONY : src/Lexer.o
 
@@ -240,6 +264,30 @@ src/Parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/Parser.cpp.s
 .PHONY : src/Parser.cpp.s
 
+src/SemanticAnalyzer.o: src/SemanticAnalyzer.cpp.o
+.PHONY : src/SemanticAnalyzer.o
+
+# target to build an object file
+src/SemanticAnalyzer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o
+.PHONY : src/SemanticAnalyzer.cpp.o
+
+src/SemanticAnalyzer.i: src/SemanticAnalyzer.cpp.i
+.PHONY : src/SemanticAnalyzer.i
+
+# target to preprocess a source file
+src/SemanticAnalyzer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.i
+.PHONY : src/SemanticAnalyzer.cpp.i
+
+src/SemanticAnalyzer.s: src/SemanticAnalyzer.cpp.s
+.PHONY : src/SemanticAnalyzer.s
+
+# target to generate assembly for a file
+src/SemanticAnalyzer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flast.dir/build.make CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.s
+.PHONY : src/SemanticAnalyzer.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -279,12 +327,18 @@ help:
 	@echo "... src/CodeGen.o"
 	@echo "... src/CodeGen.i"
 	@echo "... src/CodeGen.s"
+	@echo "... src/ErrorHandler.o"
+	@echo "... src/ErrorHandler.i"
+	@echo "... src/ErrorHandler.s"
 	@echo "... src/Lexer.o"
 	@echo "... src/Lexer.i"
 	@echo "... src/Lexer.s"
 	@echo "... src/Parser.o"
 	@echo "... src/Parser.i"
 	@echo "... src/Parser.s"
+	@echo "... src/SemanticAnalyzer.o"
+	@echo "... src/SemanticAnalyzer.i"
+	@echo "... src/SemanticAnalyzer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

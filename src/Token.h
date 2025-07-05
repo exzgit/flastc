@@ -13,78 +13,71 @@ enum class TokenType {
     TOK_SCIENTIFIC = -7,  // For 10e1, 1.5e-3, etc.
     TOK_CHAR = -8,
     
-    // Keywords - Rust-like Function Declaration
-    TOK_FN = -10,
+    // Keywords - Function Declaration (FLAST-style)
+    TOK_FUNC = -10,        // func instead of fn
     TOK_RETURN = -11,
-    TOK_PUB = -12,
-    TOK_PRIV = -13,
-    TOK_PROT = -14,
+    TOK_PUBLIC = -12,      // public instead of pub
+    TOK_PRIVATE = -13,     // private instead of priv
+    TOK_PROTECTED = -14,   // protected instead of prot
     TOK_STATIC = -15,
-    TOK_CONST = -16,
-    TOK_MUT = -17,
+    TOK_CONSTANT = -16,    // constant instead of const
+    TOK_MUTABLE = -17,     // mutable instead of mut
     TOK_UNSAFE = -18,
     
-    // Keywords - Control Flow
+    // Keywords - Control Flow (FLAST-style)
     TOK_IF = -20,
     TOK_ELSE = -21,
-    TOK_ELIF = -22,
+    TOK_ELSEIF = -22,      // elseif instead of elif
     TOK_WHILE = -23,
     TOK_FOR = -24,
     TOK_LOOP = -25,
     TOK_BREAK = -26,
     TOK_CONTINUE = -27,
-    TOK_MATCH = -28,
+    TOK_SWITCH = -28,      // switch instead of match
     TOK_CASE = -29,
     TOK_DEFAULT = -30,
+    TOK_DO = -31,          // do-while loop
+    TOK_UNTIL = -32,       // until loop
     
-    // Keywords - OOP (Enhanced)
+    // Keywords - Data Types (Rust-like)
     TOK_STRUCT = -35,
-    TOK_CLASS = -36,
-    TOK_INTERFACE = -37,
-    TOK_TRAIT = -38,
-    TOK_IMPL = -39,
-    TOK_ENUM = -40,
-    TOK_UNION = -41,
-    TOK_EXTENDS = -42,
-    TOK_IMPLEMENTS = -43,
-    TOK_SUPER = -44,
-    TOK_SELF = -45,
-    TOK_SELF_TYPE = -46,  // Self (capital S)
-    TOK_WHERE = -47,
-    TOK_ABSTRACT = -48,
-    TOK_VIRTUAL = -49,
-    TOK_OVERRIDE = -50,
-    TOK_FINAL = -51,
+    TOK_ENUM = -36,
+    TOK_UNION = -37,
+    TOK_IMPL = -38,        // impl for implementing methods
+    TOK_TRAIT = -39,       // trait for defining interfaces
+    TOK_WHERE = -40,
+    TOK_SELF = -41,        // self for methods
+    TOK_SELF_TYPE = -42,   // Self (capital S) for type
     
-    // Keywords - Variables & Types
-    TOK_LET = -55,
-    TOK_VAR = -56,
+    // Keywords - Variables & Types (FLAST-style)
+    TOK_VAR = -55,         // var instead of let
+    TOK_LET = -56,         // let for constants
     TOK_AUTO = -57,
     TOK_TYPEOF = -58,
     TOK_SIZEOF = -59,
     
-    // Primitive Types
-    TOK_I8 = -60,
-    TOK_I16 = -61,
-    TOK_I32 = -62,
-    TOK_I64 = -63,
-    TOK_I128 = -64,
-    TOK_U8 = -65,
-    TOK_U16 = -66,
-    TOK_U32 = -67,
-    TOK_U64 = -68,
-    TOK_U128 = -69,
-    TOK_F32 = -70,
-    TOK_F64 = -71,
+    // Primitive Types (FLAST-style)
+    TOK_INT8 = -60,        // int8 instead of i8
+    TOK_INT16 = -61,       // int16 instead of i16
+    TOK_INT32 = -62,       // int32 instead of i32
+    TOK_INT64 = -63,       // int64 instead of i64
+    TOK_INT128 = -64,      // int128 instead of i128
+    TOK_UINT8 = -65,       // uint8 instead of u8
+    TOK_UINT16 = -66,      // uint16 instead of u16
+    TOK_UINT32 = -67,      // uint32 instead of u32
+    TOK_UINT64 = -68,      // uint64 instead of u64
+    TOK_UINT128 = -69,     // uint128 instead of u128
+    TOK_FLOAT32 = -70,     // float32 instead of f32
+    TOK_FLOAT64 = -71,     // float64 instead of f64
     TOK_CHAR_TYPE = -72,
-    TOK_STR = -73,
-    TOK_STRING_TYPE = -74,
-    TOK_BOOL_TYPE = -75,
+    TOK_STRING_TYPE = -73, // string instead of str
+    TOK_BOOL_TYPE = -74,
     TOK_VOID = -76,
+    TOK_POINTER = -77,     // ptr for pointers
     
-    // Collection Types
-    TOK_VEC = -80,
-    TOK_ARRAY = -81,
+    // Collection Types (FLAST-style)
+    TOK_ARRAY = -80,       // array instead of vec
+    TOK_LIST = -81,        // list for dynamic arrays
     TOK_SLICE = -82,
     TOK_MAP = -83,
     TOK_SET = -84,
@@ -92,17 +85,17 @@ enum class TokenType {
     TOK_OPTION = -86,
     TOK_RESULT = -87,
     
-    // Keywords - Import/Export (TypeScript-like)
-    TOK_IMPORT = -90,
+    // Keywords - Import/Export (FLAST-style)
+    TOK_IMPORT = -90,      // import instead of use
     TOK_FROM = -91,
     TOK_EXPORT = -92,
     TOK_MODULE = -93,
     TOK_AS = -94,
-    TOK_USE = -95,
+    TOK_USE = -95,         // use for specific imports
     TOK_MOD = -96,
     TOK_CRATE = -97,
     
-    // Keywords - Memory & Ownership (Rust-like)
+    // Keywords - Memory & Ownership (FLAST-style)
     TOK_BOX = -100,
     TOK_REF = -101,
     TOK_DEREF = -102,
@@ -112,6 +105,7 @@ enum class TokenType {
     TOK_DROP = -106,
     TOK_NEW = -107,
     TOK_DELETE = -108,
+    TOK_ALLOC = -109,      // alloc for memory allocation
     
     // Keywords - Concurrency
     TOK_ASYNC = -110,
@@ -132,7 +126,7 @@ enum class TokenType {
     TOK_STDCALL = -124,
     TOK_FASTCALL = -125,
     
-    // Keywords - Exception Handling
+    // Keywords - Exception Handling (FLAST-style)
     TOK_TRY = -130,
     TOK_CATCH = -131,
     TOK_FINALLY = -132,
@@ -140,7 +134,7 @@ enum class TokenType {
     TOK_PANIC = -134,
     TOK_UNWRAP = -135,
     TOK_EXPECT = -136,
-    
+
     // Keywords - Special
     TOK_IN = -140,
     TOK_IS = -141,
@@ -150,7 +144,7 @@ enum class TokenType {
     TOK_XOR = -145,
     TOK_TRUE = -146,
     TOK_FALSE = -147,
-    TOK_NONE = -148,
+    TOK_NULL_VALUE = -148, // null instead of None
     TOK_SOME = -149,
     TOK_OK = -150,
     TOK_ERR = -151,
@@ -205,26 +199,35 @@ enum class TokenType {
     TOK_LEFT_SHIFT_ASSIGN = -270,  // <<=
     TOK_RIGHT_SHIFT_ASSIGN = -271, // >>=
     
-    // Operators - Unary
+    // Operators - Increment/Decrement (FLAST-style)
     TOK_INCREMENT = -280,       // ++
     TOK_DECREMENT = -281,       // --
-    TOK_ADDRESS_OF = -282,      // &
-    TOK_DEREFERENCE = -283,     // *
+    TOK_PRE_INCREMENT = -282,   // ++x (pre-increment)
+    TOK_PRE_DECREMENT = -283,   // --x (pre-decrement)
+    TOK_POST_INCREMENT = -284,  // x++ (post-increment)
+    TOK_POST_DECREMENT = -285,  // x-- (post-decrement)
+    
+    // Operators - Pointer Operations (FLAST-style)
+    TOK_ADDRESS_OF = -290,      // & (address of)
+    TOK_DEREFERENCE = -291,     // * (dereference)
+    TOK_POINTER_ASSIGN = -292,  // -> (pointer assignment)
+    TOK_POINTER_ACCESS = -293,  // -> (pointer member access)
+    TOK_NULL_POINTER = -294,    // nullptr
     
     // Operators - Special
-    TOK_ARROW = -290,           // ->
-    TOK_FAT_ARROW = -291,       // =>
-    TOK_DOT = -292,             // .
-    TOK_DOUBLE_DOT = -293,      // ..
-    TOK_TRIPLE_DOT = -294,      // ...
-    TOK_SCOPE = -295,           // ::
-    TOK_QUESTION = -296,        // ?
-    TOK_QUESTION_DOT = -297,    // ?.
-    TOK_QUESTION_QUESTION = -298, // ??
-    TOK_ELVIS = -299,           // ?:
-    TOK_PIPELINE = -300,        // |>
-    TOK_COMPOSE = -301,         // >>
-    TOK_SPACESHIP = -302,       // <=>
+    TOK_ARROW = -300,           // ->
+    TOK_FAT_ARROW = -301,       // =>
+    TOK_DOT = -302,             // .
+    TOK_DOUBLE_DOT = -303,      // ..
+    TOK_TRIPLE_DOT = -304,      // ...
+    TOK_SCOPE = -305,           // ::
+    TOK_QUESTION = -306,        // ?
+    TOK_QUESTION_DOT = -307,    // ?.
+    TOK_QUESTION_QUESTION = -308, // ??
+    TOK_ELVIS = -309,           // ?:
+    TOK_PIPELINE = -310,        // |>
+    TOK_COMPOSE = -311,         // >>
+    TOK_SPACESHIP = -312,       // <=>
     
     // Delimiters
     TOK_LPAREN = -400,          // (
@@ -298,6 +301,25 @@ enum class TokenType {
     TOK_MIN = -540,             // .min()
     TOK_MAX = -541,             // .max()
     TOK_SUM = -542,             // .sum()
+
+    TOK_PUB = -550,
+    TOK_CONST = -554,
+    
+    // Additional type tokens for better type parsing
+    TOK_I8 = -560,
+    TOK_I16 = -561,
+    TOK_I32 = -562,
+    TOK_I64 = -563,
+    TOK_I128 = -564,
+    TOK_U8 = -565,
+    TOK_U16 = -566,
+    TOK_U32 = -567,
+    TOK_U64 = -568,
+    TOK_U128 = -569,
+    TOK_F32 = -570,
+    TOK_F64 = -571,
+    TOK_STR = -572,
+    TOK_NONE = -573,
 };
 
 struct Token {
@@ -448,77 +470,70 @@ inline std::string tokenTypeToString(TokenType type) {
         case TokenType::TOK_CHAR: return "CHAR";
         
         // Function keywords
-        case TokenType::TOK_FN: return "FN";
+        case TokenType::TOK_FUNC: return "FUNC";
         case TokenType::TOK_RETURN: return "RETURN";
-        case TokenType::TOK_PUB: return "PUB";
-        case TokenType::TOK_PRIV: return "PRIV";
-        case TokenType::TOK_PROT: return "PROT";
+        case TokenType::TOK_PUBLIC: return "PUBLIC";
+        case TokenType::TOK_PRIVATE: return "PRIVATE";
+        case TokenType::TOK_PROTECTED: return "PROTECTED";
         case TokenType::TOK_STATIC: return "STATIC";
-        case TokenType::TOK_CONST: return "CONST";
-        case TokenType::TOK_MUT: return "MUT";
+        case TokenType::TOK_CONSTANT: return "CONSTANT";
+        case TokenType::TOK_MUTABLE: return "MUTABLE";
         case TokenType::TOK_UNSAFE: return "UNSAFE";
         
         // Control Flow
         case TokenType::TOK_IF: return "IF";
         case TokenType::TOK_ELSE: return "ELSE";
-        case TokenType::TOK_ELIF: return "ELIF";
+        case TokenType::TOK_ELSEIF: return "ELSEIF";
         case TokenType::TOK_WHILE: return "WHILE";
         case TokenType::TOK_FOR: return "FOR";
         case TokenType::TOK_LOOP: return "LOOP";
         case TokenType::TOK_BREAK: return "BREAK";
         case TokenType::TOK_CONTINUE: return "CONTINUE";
-        case TokenType::TOK_MATCH: return "MATCH";
+        case TokenType::TOK_SWITCH: return "SWITCH";
         case TokenType::TOK_CASE: return "CASE";
         case TokenType::TOK_DEFAULT: return "DEFAULT";
+        case TokenType::TOK_DO: return "DO";
+        case TokenType::TOK_UNTIL: return "UNTIL";
         
         // OOP
         case TokenType::TOK_STRUCT: return "STRUCT";
-        case TokenType::TOK_CLASS: return "CLASS";
-        case TokenType::TOK_INTERFACE: return "INTERFACE";
-        case TokenType::TOK_TRAIT: return "TRAIT";
-        case TokenType::TOK_IMPL: return "IMPL";
         case TokenType::TOK_ENUM: return "ENUM";
         case TokenType::TOK_UNION: return "UNION";
-        case TokenType::TOK_EXTENDS: return "EXTENDS";
-        case TokenType::TOK_IMPLEMENTS: return "IMPLEMENTS";
-        case TokenType::TOK_SUPER: return "SUPER";
+        case TokenType::TOK_IMPL: return "IMPL";
+        case TokenType::TOK_TRAIT: return "TRAIT";
+        case TokenType::TOK_WHERE: return "WHERE";
         case TokenType::TOK_SELF: return "SELF";
         case TokenType::TOK_SELF_TYPE: return "SELF_TYPE";
-        case TokenType::TOK_WHERE: return "WHERE";
-        case TokenType::TOK_ABSTRACT: return "ABSTRACT";
-        case TokenType::TOK_VIRTUAL: return "VIRTUAL";
-        case TokenType::TOK_OVERRIDE: return "OVERRIDE";
-        case TokenType::TOK_FINAL: return "FINAL";
         
         // Variables & Types
-        case TokenType::TOK_LET: return "LET";
         case TokenType::TOK_VAR: return "VAR";
+        case TokenType::TOK_LET: return "LET";
         case TokenType::TOK_AUTO: return "AUTO";
         case TokenType::TOK_TYPEOF: return "TYPEOF";
         case TokenType::TOK_SIZEOF: return "SIZEOF";
         
         // Primitive Types
-        case TokenType::TOK_I8: return "I8";
-        case TokenType::TOK_I16: return "I16";
-        case TokenType::TOK_I32: return "I32";
-        case TokenType::TOK_I64: return "I64";
-        case TokenType::TOK_I128: return "I128";
-        case TokenType::TOK_U8: return "U8";
-        case TokenType::TOK_U16: return "U16";
-        case TokenType::TOK_U32: return "U32";
-        case TokenType::TOK_U64: return "U64";
-        case TokenType::TOK_U128: return "U128";
-        case TokenType::TOK_F32: return "F32";
-        case TokenType::TOK_F64: return "F64";
+        case TokenType::TOK_INT8: return "INT8";
+        case TokenType::TOK_INT16: return "INT16";
+        case TokenType::TOK_INT32: return "INT32";
+        case TokenType::TOK_INT64: return "INT64";
+        case TokenType::TOK_INT128: return "INT128";
+        case TokenType::TOK_UINT8: return "UINT8";
+        case TokenType::TOK_UINT16: return "UINT16";
+        case TokenType::TOK_UINT32: return "UINT32";
+        case TokenType::TOK_UINT64: return "UINT64";
+        case TokenType::TOK_UINT128: return "UINT128";
+        case TokenType::TOK_FLOAT32: return "FLOAT32";
+        case TokenType::TOK_FLOAT64: return "FLOAT64";
         case TokenType::TOK_CHAR_TYPE: return "CHAR_TYPE";
-        case TokenType::TOK_STR: return "STR";
         case TokenType::TOK_STRING_TYPE: return "STRING_TYPE";
         case TokenType::TOK_BOOL_TYPE: return "BOOL_TYPE";
         case TokenType::TOK_VOID: return "VOID";
+        case TokenType::TOK_POINTER: return "POINTER";
         
         // Collection Types
-        case TokenType::TOK_VEC: return "VEC";
         case TokenType::TOK_ARRAY: return "ARRAY";
+        case TokenType::TOK_LIST: return "LIST";
         case TokenType::TOK_SLICE: return "SLICE";
         case TokenType::TOK_MAP: return "MAP";
         case TokenType::TOK_SET: return "SET";
@@ -546,6 +561,7 @@ inline std::string tokenTypeToString(TokenType type) {
         case TokenType::TOK_DROP: return "DROP";
         case TokenType::TOK_NEW: return "NEW";
         case TokenType::TOK_DELETE: return "DELETE";
+        case TokenType::TOK_ALLOC: return "ALLOC";
         
         // Concurrency
         case TokenType::TOK_ASYNC: return "ASYNC";
@@ -584,7 +600,7 @@ inline std::string tokenTypeToString(TokenType type) {
         case TokenType::TOK_XOR: return "XOR";
         case TokenType::TOK_TRUE: return "TRUE";
         case TokenType::TOK_FALSE: return "FALSE";
-        case TokenType::TOK_NONE: return "NONE";
+        case TokenType::TOK_NULL_VALUE: return "NULL_VALUE";
         case TokenType::TOK_SOME: return "SOME";
         case TokenType::TOK_OK: return "OK";
         case TokenType::TOK_ERR: return "ERR";
@@ -628,8 +644,15 @@ inline std::string tokenTypeToString(TokenType type) {
         case TokenType::TOK_RIGHT_SHIFT_ASSIGN: return "RIGHT_SHIFT_ASSIGN";
         case TokenType::TOK_INCREMENT: return "INCREMENT";
         case TokenType::TOK_DECREMENT: return "DECREMENT";
+        case TokenType::TOK_PRE_INCREMENT: return "PRE_INCREMENT";
+        case TokenType::TOK_PRE_DECREMENT: return "PRE_DECREMENT";
+        case TokenType::TOK_POST_INCREMENT: return "POST_INCREMENT";
+        case TokenType::TOK_POST_DECREMENT: return "POST_DECREMENT";
         case TokenType::TOK_ADDRESS_OF: return "ADDRESS_OF";
         case TokenType::TOK_DEREFERENCE: return "DEREFERENCE";
+        case TokenType::TOK_POINTER_ASSIGN: return "POINTER_ASSIGN";
+        case TokenType::TOK_POINTER_ACCESS: return "POINTER_ACCESS";
+        case TokenType::TOK_NULL_POINTER: return "NULL_POINTER";
         case TokenType::TOK_ARROW: return "ARROW";
         case TokenType::TOK_FAT_ARROW: return "FAT_ARROW";
         case TokenType::TOK_DOT: return "DOT";

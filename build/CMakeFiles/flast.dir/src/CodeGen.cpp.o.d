@@ -377,6 +377,7 @@ CMakeFiles/flast.dir/src/CodeGen.cpp.o: \
  /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
  /home/flast/Documents/dev/flast/src/Lexer.h \
  /home/flast/Documents/dev/flast/src/Token.h \
+ /home/flast/Documents/dev/flast/src/ErrorHandler.h \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h \
  /home/flast/Documents/dev/flast/src/Parser.h \

@@ -8,79 +8,10 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include "ErrorHandler.h"
 
 // Enhanced error types for better diagnostics
-enum class ErrorLevel {
-    INFO,
-    WARNING,
-    ERROR,
-    FATAL
-};
-
-enum class ErrorCode {
-    // Type errors
-    TYPE_MISMATCH,
-    UNKNOWN_TYPE,
-    INVALID_CAST,
-    INCOMPATIBLE_TYPES,
-    
-    // Variable errors  
-    UNDEFINED_VARIABLE,
-    REDEFINED_VARIABLE,
-    IMMUTABLE_ASSIGNMENT,
-    UNINITIALIZED_VARIABLE,
-    
-    // Function errors
-    UNDEFINED_FUNCTION,
-    FUNCTION_REDEFINITION,
-    PARAMETER_MISMATCH,
-    RETURN_TYPE_MISMATCH,
-    MISSING_RETURN,
-    
-    // Class/Struct errors
-    UNDEFINED_CLASS,
-    UNDEFINED_FIELD,
-    UNDEFINED_METHOD,
-    INVALID_INHERITANCE,
-    CIRCULAR_INHERITANCE,
-    ABSTRACT_INSTANTIATION,
-    
-    // Module/Import errors
-    MODULE_NOT_FOUND,
-    IMPORT_CYCLE,
-    SYMBOL_NOT_EXPORTED,
-    
-    // Control flow errors
-    UNREACHABLE_CODE,
-    BREAK_OUTSIDE_LOOP,
-    CONTINUE_OUTSIDE_LOOP,
-    
-    // Memory/Ownership errors
-    USE_AFTER_MOVE,
-    DOUBLE_FREE,
-    MEMORY_LEAK,
-    DANGLING_REFERENCE,
-    
-    // Pattern matching errors
-    NON_EXHAUSTIVE_MATCH,
-    UNREACHABLE_PATTERN,
-    INVALID_PATTERN,
-    
-    // Trait/Interface errors
-    UNIMPLEMENTED_TRAIT_METHOD,
-    TRAIT_NOT_IMPLEMENTED,
-    CONFLICTING_IMPLEMENTATIONS,
-    
-    // Concurrency errors
-    DATA_RACE,
-    DEADLOCK_POTENTIAL,
-    SEND_NOT_IMPLEMENTED,
-    SYNC_NOT_IMPLEMENTED,
-    
-    // General errors
-    SYNTAX_ERROR,
-    INTERNAL_ERROR
-};
+// (enum class ErrorLevel dan ErrorCode dihapus, gunakan dari ErrorHandler.h)
 
 struct DiagnosticMessage {
     ErrorLevel level;
@@ -216,7 +147,6 @@ private:
     std::unordered_map<std::string, std::shared_ptr<StructDeclAST>> structs;
     std::unordered_map<std::string, std::shared_ptr<EnumDeclAST>> enums;
     std::unordered_map<std::string, std::shared_ptr<TraitDeclAST>> traits;
-    std::unordered_map<std::string, std::shared_ptr<ClassDeclAST>> classes;
     
 public:
     void registerStruct(const std::string& name, std::shared_ptr<StructDeclAST> structDecl) {
@@ -229,10 +159,6 @@ public:
     
     void registerTrait(const std::string& name, std::shared_ptr<TraitDeclAST> traitDecl) {
         traits[name] = traitDecl;
-    }
-    
-    void registerClass(const std::string& name, std::shared_ptr<ClassDeclAST> classDecl) {
-        classes[name] = classDecl;
     }
     
     std::shared_ptr<StructDeclAST> getStruct(const std::string& name) {
@@ -250,14 +176,11 @@ public:
         return it != traits.end() ? it->second : nullptr;
     }
     
-    std::shared_ptr<ClassDeclAST> getClass(const std::string& name) {
-        auto it = classes.find(name);
-        return it != classes.end() ? it->second : nullptr;
-    }
+
     
     bool isUserDefinedType(const std::string& name) {
         return structs.count(name) || enums.count(name) || 
-               traits.count(name) || classes.count(name);
+               traits.count(name);
     }
 };
 
@@ -329,7 +252,7 @@ public:
     bool analyzeEnumDecl(std::shared_ptr<EnumDeclAST> enumDecl);
     bool analyzeTraitDecl(std::shared_ptr<TraitDeclAST> traitDecl);
     bool analyzeImplDecl(std::shared_ptr<ImplDeclAST> implDecl);
-    bool analyzeClassDecl(std::shared_ptr<ClassDeclAST> classDecl);
+
     bool analyzeImportDecl(std::shared_ptr<ImportDeclAST> importDecl);
     
     bool analyzeVarDecl(std::shared_ptr<VarDeclStmtAST> varDecl);

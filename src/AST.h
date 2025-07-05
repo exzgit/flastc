@@ -50,7 +50,7 @@ struct EnumDeclAST;
 struct TraitDeclAST;
 struct ImplDeclAST;
 struct FunctionDeclAST;
-struct ClassDeclAST;
+
 struct ImportDeclAST;
 struct ModuleDeclAST;
 struct ProgramAST;
@@ -102,7 +102,7 @@ public:
     virtual void visit(TraitDeclAST& node) = 0;
     virtual void visit(ImplDeclAST& node) = 0;
     virtual void visit(FunctionDeclAST& node) = 0;
-    virtual void visit(ClassDeclAST& node) = 0;
+
     virtual void visit(ImportDeclAST& node) = 0;
     virtual void visit(ModuleDeclAST& node) = 0;
     // Program visitor
@@ -120,7 +120,7 @@ enum class FlastType {
     VEC, ARRAY, SLICE,
     MAP, SET, TUPLE,
     OPTION, RESULT,
-    STRUCT, CLASS, INTERFACE, TRAIT, ENUM, UNION,
+    STRUCT, ENUM, UNION, TRAIT,
     FUNCTION, CLOSURE,
     MODULE, CRATE,
     BOX, REF,
@@ -130,8 +130,8 @@ enum class FlastType {
 
 struct TypeInfo {
     FlastType type;
-    std::string className;  // For class types
-    std::vector<std::shared_ptr<TypeInfo>> parameters;  // For generics/templates
+    std::string className;
+    std::vector<std::shared_ptr<TypeInfo>> parameters;
     bool isPointer = false;
     bool isReference = false;
     bool isConst = false;
@@ -168,8 +168,7 @@ struct TypeInfo {
             case FlastType::OPTION: return "option";
             case FlastType::RESULT: return "result";
             case FlastType::STRUCT: return className.empty() ? "struct" : className;
-            case FlastType::CLASS: return className.empty() ? "class" : className;
-            case FlastType::INTERFACE: return "interface";
+
             case FlastType::TRAIT: return "trait";
             case FlastType::ENUM: return "enum";
             case FlastType::UNION: return "union";
@@ -209,7 +208,7 @@ struct DeclAST : ASTNode {};
 struct NumberExprAST : ExprAST {
     double value;
     bool isScientific;
-    std::string originalText; // Keep original for proper formatting
+    std::string originalText; 
     
     NumberExprAST(double val, bool scientific = false, const std::string& original = "") 
         : value(val), isScientific(scientific), originalText(original) {
@@ -335,7 +334,7 @@ struct CallExprAST : ExprAST {
 struct MemberAccessExprAST : ExprAST {
     std::shared_ptr<ExprAST> object;
     std::string member;
-    bool isSafeAccess = false;  // For obj?.member
+    bool isSafeAccess = false;  
     
     MemberAccessExprAST(std::shared_ptr<ExprAST> object, const std::string& member, bool isSafeAccess = false)
         : object(object), member(member), isSafeAccess(isSafeAccess) {}
@@ -1035,48 +1034,7 @@ struct FieldDeclAST {
     }
 };
 
-// Class declarations
-struct ClassDeclAST : DeclAST {
-    std::string name;
-    std::string superClass;
-    std::vector<std::string> interfaces;
-    std::vector<FieldDeclAST> fields;
-    std::vector<std::shared_ptr<FunctionDeclAST>> methods;
-    bool isPublic = false;
-    bool isInterface = false;
-    
-    ClassDeclAST(const std::string& name, const std::string& superClass = "",
-                 std::vector<std::string> interfaces = {}, std::vector<FieldDeclAST> fields = {},
-                 std::vector<std::shared_ptr<FunctionDeclAST>> methods = {},
-                 bool isPublic = false, bool isInterface = false)
-        : name(name), superClass(superClass), interfaces(interfaces), fields(fields),
-          methods(methods), isPublic(isPublic), isInterface(isInterface) {}
-    
-    std::string toString() const override {
-        std::string result = "";
-        if (isPublic) result += "pub ";
-        result += "class " + name;
-        if (!superClass.empty()) result += " extends " + superClass;
-        if (!interfaces.empty()) {
-            result += " implements ";
-            for (size_t i = 0; i < interfaces.size(); ++i) {
-                if (i > 0) result += ", ";
-                result += interfaces[i];
-            }
-        }
-        result += " {\n";
-        for (const auto& field : fields) {
-            result += "  " + field.toString() + "\n";
-        }
-        for (const auto& method : methods) {
-            result += "  " + method->toString() + "\n";
-        }
-        result += "}";
-        return result;
-    }
-    std::string getNodeType() const override { return "ClassDecl"; }
-    void accept(ASTVisitor& visitor) override { visitor.visit(*this); }
-};
+
 
 // Import declarations
 struct ImportDeclAST : DeclAST {

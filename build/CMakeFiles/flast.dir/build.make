@@ -83,10 +83,24 @@ CMakeFiles/flast.dir/src/CodeGen.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/flast.dir/src/CodeGen.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flast/Documents/dev/flast/src/CodeGen.cpp -o CMakeFiles/flast.dir/src/CodeGen.cpp.s
 
+CMakeFiles/flast.dir/src/ErrorHandler.cpp.o: CMakeFiles/flast.dir/flags.make
+CMakeFiles/flast.dir/src/ErrorHandler.cpp.o: ../src/ErrorHandler.cpp
+CMakeFiles/flast.dir/src/ErrorHandler.cpp.o: CMakeFiles/flast.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/flast.dir/src/ErrorHandler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/flast.dir/src/ErrorHandler.cpp.o -MF CMakeFiles/flast.dir/src/ErrorHandler.cpp.o.d -o CMakeFiles/flast.dir/src/ErrorHandler.cpp.o -c /home/flast/Documents/dev/flast/src/ErrorHandler.cpp
+
+CMakeFiles/flast.dir/src/ErrorHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/flast.dir/src/ErrorHandler.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flast/Documents/dev/flast/src/ErrorHandler.cpp > CMakeFiles/flast.dir/src/ErrorHandler.cpp.i
+
+CMakeFiles/flast.dir/src/ErrorHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/flast.dir/src/ErrorHandler.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flast/Documents/dev/flast/src/ErrorHandler.cpp -o CMakeFiles/flast.dir/src/ErrorHandler.cpp.s
+
 CMakeFiles/flast.dir/src/Lexer.cpp.o: CMakeFiles/flast.dir/flags.make
 CMakeFiles/flast.dir/src/Lexer.cpp.o: ../src/Lexer.cpp
 CMakeFiles/flast.dir/src/Lexer.cpp.o: CMakeFiles/flast.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/flast.dir/src/Lexer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/flast.dir/src/Lexer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/flast.dir/src/Lexer.cpp.o -MF CMakeFiles/flast.dir/src/Lexer.cpp.o.d -o CMakeFiles/flast.dir/src/Lexer.cpp.o -c /home/flast/Documents/dev/flast/src/Lexer.cpp
 
 CMakeFiles/flast.dir/src/Lexer.cpp.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/flast.dir/src/Lexer.cpp.s: cmake_force
 CMakeFiles/flast.dir/src/Parser.cpp.o: CMakeFiles/flast.dir/flags.make
 CMakeFiles/flast.dir/src/Parser.cpp.o: ../src/Parser.cpp
 CMakeFiles/flast.dir/src/Parser.cpp.o: CMakeFiles/flast.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/flast.dir/src/Parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/flast.dir/src/Parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/flast.dir/src/Parser.cpp.o -MF CMakeFiles/flast.dir/src/Parser.cpp.o.d -o CMakeFiles/flast.dir/src/Parser.cpp.o -c /home/flast/Documents/dev/flast/src/Parser.cpp
 
 CMakeFiles/flast.dir/src/Parser.cpp.i: cmake_force
@@ -111,10 +125,24 @@ CMakeFiles/flast.dir/src/Parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/flast.dir/src/Parser.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flast/Documents/dev/flast/src/Parser.cpp -o CMakeFiles/flast.dir/src/Parser.cpp.s
 
+CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o: CMakeFiles/flast.dir/flags.make
+CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o: ../src/SemanticAnalyzer.cpp
+CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o: CMakeFiles/flast.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o -MF CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o.d -o CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o -c /home/flast/Documents/dev/flast/src/SemanticAnalyzer.cpp
+
+CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flast/Documents/dev/flast/src/SemanticAnalyzer.cpp > CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.i
+
+CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flast/Documents/dev/flast/src/SemanticAnalyzer.cpp -o CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.s
+
 CMakeFiles/flast.dir/src/main.cpp.o: CMakeFiles/flast.dir/flags.make
 CMakeFiles/flast.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/flast.dir/src/main.cpp.o: CMakeFiles/flast.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/flast.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/flast.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/flast.dir/src/main.cpp.o -MF CMakeFiles/flast.dir/src/main.cpp.o.d -o CMakeFiles/flast.dir/src/main.cpp.o -c /home/flast/Documents/dev/flast/src/main.cpp
 
 CMakeFiles/flast.dir/src/main.cpp.i: cmake_force
@@ -128,16 +156,20 @@ CMakeFiles/flast.dir/src/main.cpp.s: cmake_force
 # Object files for target flast
 flast_OBJECTS = \
 "CMakeFiles/flast.dir/src/CodeGen.cpp.o" \
+"CMakeFiles/flast.dir/src/ErrorHandler.cpp.o" \
 "CMakeFiles/flast.dir/src/Lexer.cpp.o" \
 "CMakeFiles/flast.dir/src/Parser.cpp.o" \
+"CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o" \
 "CMakeFiles/flast.dir/src/main.cpp.o"
 
 # External object files for target flast
 flast_EXTERNAL_OBJECTS =
 
 flast: CMakeFiles/flast.dir/src/CodeGen.cpp.o
+flast: CMakeFiles/flast.dir/src/ErrorHandler.cpp.o
 flast: CMakeFiles/flast.dir/src/Lexer.cpp.o
 flast: CMakeFiles/flast.dir/src/Parser.cpp.o
+flast: CMakeFiles/flast.dir/src/SemanticAnalyzer.cpp.o
 flast: CMakeFiles/flast.dir/src/main.cpp.o
 flast: CMakeFiles/flast.dir/build.make
 flast: /usr/lib/llvm-14/lib/libLLVMSupport.a
@@ -193,7 +225,7 @@ flast: /usr/lib/x86_64-linux-gnu/libz.so
 flast: /usr/lib/x86_64-linux-gnu/libtinfo.so
 flast: /usr/lib/llvm-14/lib/libLLVMDemangle.a
 flast: CMakeFiles/flast.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable flast"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/flast/Documents/dev/flast/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable flast"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/flast.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

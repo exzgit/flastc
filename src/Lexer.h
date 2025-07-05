@@ -1,5 +1,6 @@
 #pragma once
 #include "Token.h"
+#include "ErrorHandler.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -37,4 +38,5 @@ public:
     Lexer(const std::string& input);
     std::vector<Token> tokenize();
     Token nextToken();
+    std::string getCurrentLineContent() const;
 }; 
