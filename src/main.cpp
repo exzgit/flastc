@@ -6,6 +6,7 @@
 #include "Lexer.h"
 #include "Parser.h"
 #include "CodeGen.h"
+#include "ErrorHandler.h"
 
 std::string readFile(const std::string& filename) {
     std::ifstream file(filename);
@@ -33,6 +34,10 @@ void printUsage(const char* programName) {
     std::cout << "  --ir           Print LLVM IR instead of compiling\n";
     std::cout << "  --tokens       Print tokens instead of compiling\n";
     std::cout << "  --ast          Print AST instead of compiling\n";
+    std::cout << "  --warnings-as-errors  Treat warnings as errors\n";
+    std::cout << "  --no-colors    Disable colored output\n";
+    std::cout << "  --verbose      Show detailed error information\n";
+    std::cout << "  -v, --version  Show version information\n";
     std::cout << "  -h, --help     Show this help message\n\n";
     std::cout << "Output Structure:\n";
     std::cout << "  .build/bin/    - Executable files (platform-specific extension)\n";
@@ -54,11 +59,16 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    // Check for help first
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "-h" || arg == "--help") {
             printUsage(argv[0]);
+            return 0;
+        } else if (arg == "-v" || arg == "--version") {
+            std::cout << "===== FLASTC =====" << std::endl;
+            std::cout << "Version: 1.0.0" << std::endl;
+            std::cout << "Author: flastdev team" << std::endl;
+            std::cout << "Contact: officialbangezz@gmail.com" << std::endl;
             return 0;
         }
     }
@@ -71,6 +81,9 @@ int main(int argc, char* argv[]) {
     bool printIR = false;
     bool printTokens = false;
     bool printAST = false;
+    bool warningsAsErrors = false;
+    bool noColors = false;
+    bool verbose = false;
     
     // Parse command line arguments
     for (int i = 2; i < argc; ++i) {
@@ -95,15 +108,22 @@ int main(int argc, char* argv[]) {
             printTokens = true;
         } else if (arg == "--ast") {
             printAST = true;
+        } else if (arg == "--warnings-as-errors") {
+            warningsAsErrors = true;
+        } else if (arg == "--no-colors") {
+            noColors = true;
+        } else if (arg == "--verbose") {
+            verbose = true;
         } else {
-            std::cerr << "Unknown option: " << arg << std::endl;
-            printUsage(argv[0]);
-            return 1;
+            debugMode = false;
+            optimized = true;
         }
     }
     
     try {
-        // Validate input file
+        g_errorHandler.setWarningsAsErrors(warningsAsErrors);
+        g_errorHandler.setUseColors(!noColors);
+        
         if (!std::filesystem::exists(inputFile)) {
             throw std::runtime_error("Input file does not exist: " + inputFile);
         }
@@ -126,7 +146,7 @@ int main(int argc, char* argv[]) {
         
         // Syntax analysis
         Parser parser(std::move(tokens));
-        auto ast = parser.parse();
+        auto ast = parser.parseProgram();
         
         if (printAST) {
             std::cout << "=== AST ===" << std::endl;
@@ -169,7 +189,12 @@ int main(int argc, char* argv[]) {
         std::cout << "\nRun with: " << exePath << std::endl;
         
     } catch (const std::exception& e) {
-        std::cerr << "\n❌ Compilation failed: " << e.what() << std::endl;
+        g_errorHandler.printAllIssues();
+        
+        // If no specific errors were reported, show the generic exception
+        if (!g_errorHandler.hasCompilationErrors()) {
+            std::cerr << "\nCompilation failed: " << e.what() << std::endl;
+        }
         return 1;
     }
     
